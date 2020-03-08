@@ -1,0 +1,34 @@
+# # set environment variables for mysql
+# - name: set environment variables for mysql
+#   command: "{{item}}"
+#   loop:
+#     - DEBIAN_FRONTEND=nonintercative
+#     - export DEBIAN_FRONTEND
+#   tags:
+#     - setup
+# copy mysql packages.
+- name: Copy mysql packages
+  copy:
+    src: "{{item}}"
+    dest: /tmp/{{item}}
+    owner: root
+    group: root
+    mode: 755
+  loop:
+      - percona-server-common-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-client-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-server-5.7_5.7.29-32-1.bionic_amd64.deb
+  tags:
+      - setup
+# install mysql packages
+- name: install mysql packages
+  apt:
+    deb: /tmp/{{item}}
+  environment:
+    DEBIAN_FRONTEND: nonintercative
+  loop:
+      - percona-server-common-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-client-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-server-5.7_5.7.29-32-1.bionic_amd64.deb
+  tags:
+    - setup

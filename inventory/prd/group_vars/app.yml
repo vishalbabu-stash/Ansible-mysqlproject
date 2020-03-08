@@ -1,0 +1,3 @@
+# group variables.
+app:
+  environment: prd
